@@ -42,125 +42,80 @@ radius=st.sidebar.number_input(
     step=1000,
 )
 
+facilities_list_name = st.sidebar.multiselect(
+    'What are the facilities you are expecting',
+    ['Gym', 'Restaurents', 'cafe','market'],
+    )
 
 
-#
-# latitude=0.3
-# longitude=0.5
-# if location_name=='Nsut':
-#     latitude=28.6100216
-#     longitude=77.0379647
-# else:
-#     latitude = 0.8989
-#     longitude = 779647
-
-# st.sidebar.write(latitude," ",longitude," ",radius);
-# st.write(type(latitude))
 
 
-#
-#
 
-def draw_graph(location_name,location_latitude,location_longitude,radius):
-    # # url = 'https://discover.search.hereapi.com/v1/discover?in=circle:28.6100216,77.0379647;r=100000&q=appartment&apiKey=kW5ZzpawjBDJ0waMxzGx_a3cFfR9bgWK-5ejXI9xt1s'
-    #
-    url = 'https://discover.search.hereapi.com/v1/discover?in=circle:{0},{1};r={2}&q=appartment&apiKey=uJHMEjeagmFGldXp661-pDMf4R-PxvWIu7I68UjYC5Q'.format(
-        location_latitude, location_longitude, radius)
-    data = requests.get(url).json()
-    d = json_normalize(data['items'])
-    # st.write(d)
-    # Cleaning API data
-    d2 = d[['title', 'address.label', 'distance', 'access', 'position.lat', 'position.lng', 'address.postalCode',
-            'contacts', 'id']]
-    # d2.to_csv('api-data/cleaned_apartment.csv')
-    # st.write(d2)
 
-    # Counting no. of cafes, department stores and gyms near apartments around IIT Bombay
-    df_final = d2[['position.lat', 'position.lng']]
+def fill_facilitites(search_query,List,latitude,longitude,index):
+    radius = '1000'
+    url = 'https://discover.search.hereapi.com/v1/discover?in=circle:{},{};r={}&q={}&apiKey=uJHMEjeagmFGldXp661-pDMf4R-PxvWIu7I68UjYC5Q'.format(
+        latitude, longitude, radius, search_query)
+    results = requests.get(url).json()
+    venues = json_normalize(results['items'])
+    List[index].append(venues['title'].count())
 
-    def find_facilities(df_final):
-        CafeList = []
-        ResList = []
-        GymList = []
-        latitudes = list(d2['position.lat'])
-        longitudes = list(d2['position.lng'])
-        for lat, lng in zip(latitudes, longitudes):
-            radius = '1000'  # Set the radius to 1000 metres
-            latitude = lat
-            longitude = lng
 
-            search_query = 'cafe'  # Search for any cafes
-            url = 'https://discover.search.hereapi.com/v1/discover?in=circle:{},{};r={}&q={}&apiKey=uJHMEjeagmFGldXp661-pDMf4R-PxvWIu7I68UjYC5Q'.format(
-                latitude, longitude, radius, search_query)
-            results = requests.get(url).json()
-            venues = json_normalize(results['items'])
-            CafeList.append(venues['title'].count())
 
-            search_query = 'gym'  # Search for any gyms
-            url = 'https://discover.search.hereapi.com/v1/discover?in=circle:{},{};r={}&q={}&apiKey=uJHMEjeagmFGldXp661-pDMf4R-PxvWIu7I68UjYC5Q'.format(
-                latitude, longitude, radius, search_query)
-            results = requests.get(url).json()
-            venues = json_normalize(results['items'])
-            GymList.append(venues['title'].count())
 
-            search_query = 'restaurents'  # search for supermarkets
-            url = 'https://discover.search.hereapi.com/v1/discover?in=circle:{},{};r={}&q={}&apiKey=uJHMEjeagmFGldXp661-pDMf4R-PxvWIu7I68UjYC5Q'.format(
-                latitude, longitude, radius, search_query)
-            results = requests.get(url).json()
-            venues = json_normalize(results['items'])
-            ResList.append(venues['title'].count())
+def find_facilities(df_final,d2):
+    latitudes = list(d2['position.lat'])
+    longitudes = list(d2['position.lng'])
+    List = [[] for _ in range(len(facilities_list_name))]
+    for lat, lng in zip(latitudes, longitudes):
+        latitude = lat
+        longitude = lng
 
-        df_final['Cafes'] = CafeList
-        df_final['Restaurents'] = ResList
-        df_final['Gyms'] = GymList
 
-        # df_final
+        for i in range(0,len(facilities_list_name)):
+            fill_facilitites(facilities_list_name[i], List, latitude, longitude, i)
 
-    find_facilities(df_final)
 
-    # st.write(df_final)
+    for i in range(0,len(List)):
+        # st.sidebar.write(facilities_list_name[i] , " | ", len(List[i]) )
+        df_final[facilities_list_name[i]]=List[i]
 
-    # st.sidebar.write(location_latitude, " ", location_longitude, " ", radius);
 
-    def make_cluster(df_final):
-        # Run K-means clustering on dataframe
-        kclusters = 3
+def make_cluster(df_final):
+    # Run K-means clustering on dataframe
+    kclusters = 3
 
-        kmeans = KMeans(n_clusters=kclusters, random_state=0).fit(df_final)
-        df_final['Cluster'] = kmeans.labels_
-        df_final['Cluster'] = df_final['Cluster'].apply(str)
-        # df_final
+    kmeans = KMeans(n_clusters=kclusters, random_state=0).fit(df_final)
+    df_final['Cluster'] = kmeans.labels_
+    df_final['Cluster'] = df_final['Cluster'].apply(str)
 
-    make_cluster(df_final)
 
-    # st.write(df_final)
+def add_to_map(df_final,d2):
+    # Plotting clustered locations on map using Folium
 
-    def add_to_map(df_final):
-        # Plotting clustered locations on map using Folium
+     # define coordinates of the college
+    map_bom = folium.Map(location=[location_latitude, location_longitude], zoom_start=12)
 
-        # define coordinates of the college
-        map_bom = folium.Map(location=[location_latitude, location_longitude], zoom_start=12)
+    # instantiate a feature group for the incidents in the dataframe
+    locations = folium.map.FeatureGroup()
 
-        # instantiate a feature group for the incidents in the dataframe
-        locations = folium.map.FeatureGroup()
+    # set color scheme for the clusters
+    def color_producer(cluster):
+        if cluster == '0':
+            return 'green'
+        elif cluster == '1':
+            return 'orange'
+        else:
+            return 'red'
 
-        # set color scheme for the clusters
-        def color_producer(cluster):
-            if cluster == '0':
-                return 'green'
-            elif cluster == '1':
-                return 'orange'
-            else:
-                return 'red'
-
-        latitudes = list(df_final['position.lat'])
-        longitudes = list(df_final['position.lng'])
-        labels = list(df_final['Cluster'])
-        names = list(d2['title'])
-        for lat, lng, label, names in zip(latitudes, longitudes, labels, names):
-            folium.CircleMarker(
-                [lat, lng],
-                fill=True,
+    latitudes = list(df_final['position.lat'])
+    longitudes = list(df_final['position.lng'])
+    labels = list(df_final['Cluster'])
+    names = list(d2['title'])
+    for lat, lng, label, names in zip(latitudes, longitudes, labels, names):
+        folium.CircleMarker(
+            [lat, lng],
+            fill=True,
                 fill_opacity=1,
                 popup=folium.Popup(names, max_width=300),
                 radius=5,
@@ -168,20 +123,52 @@ def draw_graph(location_name,location_latitude,location_longitude,radius):
             ).add_to(map_bom)
 
         # add locations to map
-        map_bom.add_child(locations)
-        folium.Marker([location_latitude, location_longitude], popup=location_name).add_to(map_bom)
-        return map_bom
+    map_bom.add_child(locations)
+    folium.Marker([location_latitude, location_longitude], popup=location_name).add_to(map_bom)
+    return map_bom
 
-    map_obj = add_to_map(df_final)
+def draw_graph(location_name,location_latitude,location_longitude,radius):
+    # # url = 'https://discover.search.hereapi.com/v1/discover?in=circle:28.6100216,77.0379647;r=100000&q=appartment&apiKey=kW5ZzpawjBDJ0waMxzGx_a3cFfR9bgWK-5ejXI9xt1s'
+    #
 
-    # st_folium(map_obj)
-    return map_obj
+    url = 'https://discover.search.hereapi.com/v1/discover?in=circle:{0},{1};r={2}&q=appartment&apiKey=uJHMEjeagmFGldXp661-pDMf4R-PxvWIu7I68UjYC5Q'.format(
+        location_latitude, location_longitude, radius)
+    data = requests.get(url).json()
+    d = json_normalize(data['items'])
+
+    d2 = d[['title', 'address.label', 'distance', 'access', 'position.lat', 'position.lng', 'address.postalCode',
+            'contacts', 'id']]
+
+
+    # Counting no. of cafes, department stores and gyms near apartments around IIT Bombay
+    df_final = d2[['position.lat', 'position.lng']]
+
+    find_facilities(df_final,d2)
+    st.sidebar.write('after find_facilities')
+
+    make_cluster(df_final)
+
+    # create map object and plot the points
+
+    map_obj = add_to_map(df_final,d2)
+    name_df=pd.DataFrame()
+    name_df['name']=d2['title']
+    sz=len(df_final.columns)
+
+    for i in range(2,sz):
+        name_df[df_final.columns[i]]=df_final[df_final.columns[i]]
+
+
+
+    return map_obj, name_df
 
 
 if st.sidebar.button('saw result'):
-    map_obj=draw_graph(location_name,location_latitude,location_longitude,radius)
+    map_obj, name_df =draw_graph(location_name,location_latitude,location_longitude,radius)
 
     folium_static(map_obj, width=700)
+    # st.write(df_final)
+    st.write(name_df)
 
 
 
