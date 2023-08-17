@@ -1,2 +1,2 @@
-streamlit-folium
-sklearn
+streamlit-folium==0.13.0
+scikit-learn==1.3.0
