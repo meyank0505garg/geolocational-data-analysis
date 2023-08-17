@@ -3,9 +3,9 @@ import json
 import pandas as pd
 from pandas import json_normalize
 import requests
-from tabulate import tabulate
+# from tabulate import tabulate
 from sklearn.cluster import KMeans
-import random
+# import random
 import numpy as np
 import pandas as pd
 import folium
