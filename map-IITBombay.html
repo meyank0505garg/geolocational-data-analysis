@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_8f540a0469d5c1e31ca1551b419883a9 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_8f540a0469d5c1e31ca1551b419883a9" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_8f540a0469d5c1e31ca1551b419883a9 = L.map(
+                "map_8f540a0469d5c1e31ca1551b419883a9",
+                {
+                    center: [19.1334, 72.9133],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 12,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_7ec2e76038a3787bf4f964dbecd9ec3c = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_8f540a0469d5c1e31ca1551b419883a9);
+        
+    
+            var circle_marker_f5c966d702df10d7d6d17ee3a63c8826 = L.circleMarker(
+                [28.62039, 77.0448],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_8f540a0469d5c1e31ca1551b419883a9);
+        
+    
+        var popup_98b5161cd3d5341bdbc0ca6ae4ee0c24 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_4ea682837fab44344021c75155808575 = $(`<div id="html_4ea682837fab44344021c75155808575" style="width: 100.0%; height: 100.0%;">Shivam Properties</div>`)[0];
+                popup_98b5161cd3d5341bdbc0ca6ae4ee0c24.setContent(html_4ea682837fab44344021c75155808575);
+            
+        
+
+        circle_marker_f5c966d702df10d7d6d17ee3a63c8826.bindPopup(popup_98b5161cd3d5341bdbc0ca6ae4ee0c24)
+        ;
+
+        
+    
+    
+            var circle_marker_6c76eb7f49af955d6fe911c154a52019 = L.circleMarker(
+                [28.63851, 77.07318],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_8f540a0469d5c1e31ca1551b419883a9);
+        
+    
+        var popup_6f53410004747a73640eb79fe088aaee = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_d4de19ee81a68f6dc79cfe5302351f13 = $(`<div id="html_d4de19ee81a68f6dc79cfe5302351f13" style="width: 100.0%; height: 100.0%;">Kohinoor Guest House-Vikaspuri</div>`)[0];
+                popup_6f53410004747a73640eb79fe088aaee.setContent(html_d4de19ee81a68f6dc79cfe5302351f13);
+            
+        
+
+        circle_marker_6c76eb7f49af955d6fe911c154a52019.bindPopup(popup_6f53410004747a73640eb79fe088aaee)
+        ;
+
+        
+    
+    
+            var circle_marker_d0bb0539ff4f6013175ee6dd72a30bfe = L.circleMarker(
+                [28.62092, 77.10485],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 1, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_8f540a0469d5c1e31ca1551b419883a9);
+        
+    
+        var popup_b8ef9f7e6dca23c58a923daf36f21751 = L.popup({"maxWidth": 300});
+
+        
+            
+                var html_8f9fff8a2a82a8f64a21b1dc64ea3565 = $(`<div id="html_8f9fff8a2a82a8f64a21b1dc64ea3565" style="width: 100.0%; height: 100.0%;">Stay Royal Bed N Breakfast</div>`)[0];
+                popup_b8ef9f7e6dca23c58a923daf36f21751.setContent(html_8f9fff8a2a82a8f64a21b1dc64ea3565);
+            
+        
+
+        circle_marker_d0bb0539ff4f6013175ee6dd72a30bfe.bindPopup(popup_b8ef9f7e6dca23c58a923daf36f21751)
+        ;
+
+        
+    
+    
+            var feature_group_c1d1a82a023c9ba4e1137becd3d5194e = L.featureGroup(
+                {}
+            ).addTo(map_8f540a0469d5c1e31ca1551b419883a9);
+        
+    
+            var marker_c63c9c6a7ff2b13840afcac155f2927b = L.marker(
+                [19.1334, 72.9133],
+                {}
+            ).addTo(map_8f540a0469d5c1e31ca1551b419883a9);
+        
+    
+        var popup_753f150e5a983a0660c0e44e0a5f50bc = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4898aa681e0e83786882ce151e42091b = $(`<div id="html_4898aa681e0e83786882ce151e42091b" style="width: 100.0%; height: 100.0%;">IIT Bombay</div>`)[0];
+                popup_753f150e5a983a0660c0e44e0a5f50bc.setContent(html_4898aa681e0e83786882ce151e42091b);
+            
+        
+
+        marker_c63c9c6a7ff2b13840afcac155f2927b.bindPopup(popup_753f150e5a983a0660c0e44e0a5f50bc)
+        ;
+
+        
+    
+</script>
+</html>

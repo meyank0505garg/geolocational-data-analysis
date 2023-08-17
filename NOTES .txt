@@ -1,0 +1,100 @@
+
+mapobj = folium.Map() //-> map object is created
+
+mapobj = folium.Map(location=[{latitude},{longitude}],zoom_start={val},zoom_control = True,tiles='{}') //-> tiles defines defualt tile in map like stamenterrain etc.
+
+mapobj.save('{name of html file with extension html}')// -> it will save automatically the result 
+
+folium.LayerControl().add_to(mapobj) // by default only only layer is added. to add new layers :
+folium.TileLayer('stamenterrain',attr='stamenterrain').add_to(mapobj) // instead of stamenterrain we can add other too just google it 
+
+https://nagasudhir.blogspot.com/2021/07/introduction-to-folium-for-interactive.html
+http://leaflet-extras.github.io/leaflet-providers/preview/
+
+from console just write map then tab -> we get the map object then acces center using .getCenter(),getZoom()
+
+
+Draw cirlce : 
+folium.Circle(radius={val},location=[{lat},{long}]).add_to(mapobj) //val in meters like 5000
+https://nagasudhir.blogspot.com/2021/07/draw-circles-and-circle-markers-in.html // reffrence 
+
+folium.Circle(radius={val},
+			location=[{lat},{long}],
+			color="red",
+			weight=5,
+			fill=True,
+			fill_color='blue',
+			fill_opacity=0.5,
+			stroke = True).add_to(mapobj) // stroke meanks border line 
+
+
+another similar function with same attributes is folium.CircleMarker() here radius is in pixels means it does not matter how we zoom in or out size of circle remains same as it's in pixel with center location. that's the only diff b/w these two 
+
+
+another amazing attributes are : 
+folium.Circle(radius={val},
+			location=[{lat},{long}],
+			color="red",
+			tooltip = 'this is circle'
+			popup=folium.Popup('{str}', max_width={val (in pixel)}) // str is html text like this is <b>popup</b> hence we can add image and so 
+			
+			
+			).add_to(mapobj)
+
+instead of adding this directly to map we can create a seperate layer then add using LayerControl 
+
+shapesLayer = folium.FeatureGroup(name='shapes').add_to(mapobj)
+folium.Circle(radius={val},
+			location=[{lat},{long}],
+			color="red",
+			tooltip = 'this is circle'
+			popup=folium.Popup('{str}', max_width={val (in pixel)}) // str is html text like this is <b>popup</b> hence we can add image and so 
+			
+			
+			).add_to(shapesLayer)
+
+folium.LayerControl().add_to(mapobj)
+
+
+to create multiple circles :
+circledata = [
+	[25,74,80000]
+	[26,174,90000]
+	[25,740,8000]
+// lat,long,radius
+
+]
+
+for d in circledata:
+	folium.Circle(radius=d[2],
+			location=[d[0],d[1]],
+			color="red",
+			tooltip = 'this is circle'
+			popup=folium.Popup('{str}', max_width={val (in pixel)}) // str is html text like this is <b>popup</b> hence we can add image and so 
+			
+			
+			).add_to(shapesLayer)
+
+
+folium.LayerControl().add_to(mapobj)
+
+refferences. : https://nagasudhir.blogspot.com/2021/07/draw-circles-and-circle-markers-in.html
+
+
+Markers : 
+
+folium,Marker(location = [{lat},{long}],
+		   tooltip = '{}'
+		   popup=folium.Popup()
+			icon=folium.Icon(icon='{val}') // for more https://nagasudhir.blogspot.com/2021/07/draw-markers-in-python-folium-maps.html 
+			color='{}'
+).add_to(mapobj)
+
+
+	
+
+
+
+
+
+
