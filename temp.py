@@ -54,7 +54,7 @@ radius=st.sidebar.number_input(
 #     latitude = 0.8989
 #     longitude = 779647
 
-# st.sidebar.write(latitude," ",longitude," ",radius);
+st.sidebar.write('hello world');
 # st.write(type(latitude))
 
 
