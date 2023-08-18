@@ -145,7 +145,7 @@ def draw_graph(location_name,location_latitude,location_longitude,radius):
     df_final = d2[['position.lat', 'position.lng']]
 
     find_facilities(df_final,d2)
-    st.sidebar.write('after find_facilities')
+    # st.sidebar.write('after find_facilities')
 
     make_cluster(df_final)
 
