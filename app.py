@@ -135,9 +135,10 @@ def draw_graph(location_name,location_latitude,location_longitude,radius):
         location_latitude, location_longitude, radius)
     data = requests.get(url).json()
     d = json_normalize(data['items'])
+    if d.shape[0] ==0:
+        return -1,-1,0
 
-    d2 = d[['title', 'address.label', 'distance', 'access', 'position.lat', 'position.lng', 'address.postalCode',
-            'contacts', 'id']]
+    d2 = d[['title','position.lat', 'position.lng']]
 
 
     # Counting no. of cafes, department stores and gyms near apartments around IIT Bombay
@@ -160,15 +161,19 @@ def draw_graph(location_name,location_latitude,location_longitude,radius):
 
 
 
-    return map_obj, name_df
+    return map_obj, name_df,1
 
 
 if st.sidebar.button('saw result'):
-    map_obj, name_df =draw_graph(location_name,location_latitude,location_longitude,radius)
+    map_obj, name_df,val =draw_graph(location_name,location_latitude,location_longitude,radius)
+    if val == 0:
+        st.write('not available')
+    else:
+        folium_static(map_obj, width=700)
+        # st.write(df_final)
+        st.write(name_df)
 
-    folium_static(map_obj, width=700)
-    # st.write(df_final)
-    st.write(name_df)
+
 
 
 
