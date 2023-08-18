@@ -16,10 +16,10 @@ import os
 os.environ.keys()
 
 # st.write("hello world")
-
-location_name = st.sidebar.selectbox(
-    "Location",
-    ("Nsut", "IIT Bombay")
+location_name = st.sidebar.text_input(
+    label="Enter a Place location :",
+    value="",
+    placeholder="like : NSUT",
 )
 
 
