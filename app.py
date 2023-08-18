@@ -42,6 +42,12 @@ radius=st.sidebar.number_input(
     step=1000,
 )
 
+thing=st.sidebar.text_input(
+    label="enter the thing you are searhing :",
+    value="",
+    placeholder="like : appartment",
+)
+
 facilities_list_name = st.sidebar.multiselect(
     'What are the facilities you are expecting',
     ['Gym', 'Restaurents', 'cafe','market'],
@@ -128,11 +134,11 @@ def add_to_map(df_final,d2):
     return map_bom
 
 def draw_graph(location_name,location_latitude,location_longitude,radius):
-    # # url = 'https://discover.search.hereapi.com/v1/discover?in=circle:28.6100216,77.0379647;r=100000&q=appartment&apiKey=kW5ZzpawjBDJ0waMxzGx_a3cFfR9bgWK-5ejXI9xt1s'
-    #
+    url = 'https://discover.search.hereapi.com/v1/discover?in=circle:{0},{1};r={2}&q={3}&apiKey=kW5ZzpawjBDJ0waMxzGx_a3cFfR9bgWK-5ejXI9xt1s'.format(
+            location_latitude, location_longitude, radius,thing)
 
-    url = 'https://discover.search.hereapi.com/v1/discover?in=circle:{0},{1};r={2}&q=appartment&apiKey=uJHMEjeagmFGldXp661-pDMf4R-PxvWIu7I68UjYC5Q'.format(
-        location_latitude, location_longitude, radius)
+    # url = 'https://discover.search.hereapi.com/v1/discover?in=circle:{0},{1};r={2}&q={3}&apiKey=uJHMEjeagmFGldXp661-pDMf4R-PxvWIu7I68UjYC5Q'.format(
+    #     location_latitude, location_longitude, radius,thing)
     data = requests.get(url).json()
     d = json_normalize(data['items'])
     if d.shape[0] ==0:
@@ -156,8 +162,12 @@ def draw_graph(location_name,location_latitude,location_longitude,radius):
     name_df['name']=d2['title']
     sz=len(df_final.columns)
 
-    for i in range(2,sz):
+
+
+    for i in range(0,sz):
         name_df[df_final.columns[i]]=df_final[df_final.columns[i]]
+
+    # df_final['name']=d2['title']
 
 
 
@@ -171,7 +181,23 @@ if st.sidebar.button('saw result'):
     else:
         folium_static(map_obj, width=700)
         # st.write(df_final)
-        st.write(name_df)
+        # st.write(name_df)
+        thing=thing.upper()
+
+        st.header('List of {} marked as Green'.format(thing))
+        new_df_green=name_df[name_df['Cluster']=='0']
+        new_df_green.drop(columns=['Cluster'],inplace=True)
+        st.write(new_df_green)
+
+        st.header('List of {} marked as Orange'.format(thing))
+        new_df_orange=name_df[name_df['Cluster']=='1']
+        new_df_orange.drop(columns=['Cluster'],inplace=True)
+        st.write(new_df_orange)
+
+        st.header('List of {} marked as Red'.format(thing))
+        new_df_red=name_df[name_df['Cluster']=='2']
+        new_df_red.drop(columns=['Cluster'],inplace=True)
+        st.write(new_df_red)
 
 
 
