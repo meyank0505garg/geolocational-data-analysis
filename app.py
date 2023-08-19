@@ -64,7 +64,10 @@ def fill_facilitites(search_query,List,latitude,longitude,index):
         latitude, longitude, radius, search_query)
     results = requests.get(url).json()
     venues = json_normalize(results['items'])
-    List[index].append(venues['title'].count())
+    if len(venues) >0:
+        List[index].append(venues['title'].count())
+    else:
+        List[index].append(0)
 
 
 
@@ -88,6 +91,9 @@ def find_facilities(df_final,d2):
 
 
 def make_cluster(df_final):
+    if len(df_final) <=3 :
+        df_final['Cluster']='0'
+        return;
     # Run K-means clustering on dataframe
     kclusters = 3
 
@@ -177,7 +183,7 @@ def draw_graph(location_name,location_latitude,location_longitude,radius):
 if st.sidebar.button('saw result'):
     map_obj, name_df,val =draw_graph(location_name,location_latitude,location_longitude,radius)
     if val == 0:
-        st.write('not available')
+        st.header('Not Available ; try to enter different values')
     else:
         folium_static(map_obj, width=700)
         # st.write(df_final)
