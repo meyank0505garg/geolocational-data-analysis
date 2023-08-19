@@ -26,12 +26,12 @@ location_name = st.sidebar.text_input(
 
 location_latitude=st.sidebar.text_input(
     label="Enter a latitude :",
-    value="28.6100216",
+    value="",
     placeholder="like : 28.6100216",
 )
 location_longitude=st.sidebar.text_input(
     label="Enter a longitude :",
-    value="77.0379647",
+    value="",
     placeholder="like : 77.0379647",
 )
 
