@@ -43,13 +43,13 @@ radius=st.sidebar.number_input(
 )
 
 thing=st.sidebar.text_input(
-    label="enter the thing you are searhing :",
+    label="Enter the amenities you are searhing :",
     value="",
     placeholder="like : appartment",
 )
 
 facilities_list_name = st.sidebar.multiselect(
-    'What are the facilities you are expecting',
+    'What are the facilities you are expecting : ',
     ['Gym', 'Restaurents', 'cafe','market'],
     )
 
