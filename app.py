@@ -60,7 +60,7 @@ facilities_list_name = st.sidebar.multiselect(
 
 def fill_facilitites(search_query,List,latitude,longitude,index):
     radius = '1000'
-    url = 'https://discover.search.hereapi.com/v1/discover?in=circle:{},{};r={}&q={}&apiKey=uJHMEjeagmFGldXp661-pDMf4R-PxvWIu7I68UjYC5Q'.format(
+    url = 'https://discover.search.hereapi.com/v1/discover?in=circle:{0},{1};r={2}&q={3}&apiKey=kW5ZzpawjBDJ0waMxzGx_a3cFfR9bgWK-5ejXI9xt1s'.format(
         latitude, longitude, radius, search_query)
     results = requests.get(url).json()
     venues = json_normalize(results['items'])
@@ -91,7 +91,7 @@ def find_facilities(df_final,d2):
 
 
 def make_cluster(df_final):
-    if len(df_final) <=3 :
+    if df_final.shape[0] <=3 or df_final.shape[1]==0 :
         df_final['Cluster']='0'
         return;
     # Run K-means clustering on dataframe
@@ -158,8 +158,10 @@ def draw_graph(location_name,location_latitude,location_longitude,radius):
 
     find_facilities(df_final,d2)
     # st.sidebar.write('after find_facilities')
+    df_cluster=df_final.iloc[:,2:]
 
-    make_cluster(df_final)
+    make_cluster(df_cluster)
+    df_final['Cluster']=df_cluster['Cluster']
 
     # create map object and plot the points
 
