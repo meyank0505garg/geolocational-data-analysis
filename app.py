@@ -16,6 +16,8 @@ import os
 os.environ.keys()
 
 # st.write("hello world")
+st.title('Geolocational Area Analysis')
+
 location_name = st.sidebar.text_input(
     label="Enter a Place location :",
     value="",
